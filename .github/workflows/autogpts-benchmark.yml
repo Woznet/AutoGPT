@@ -45,7 +45,7 @@ jobs:
         run: |
           ./run agent start ${{ matrix.agent-name }}
           cd autogpts/${{ matrix.agent-name }}
-          poetry run agbenchmark run -N 3 \
+          poetry run agbenchmark --debug run -N 3 \
             --test=ReadFile \
             --test=BasicRetrieval --test=RevenueRetrieval2 \
             --test=CombineCsv --test=LabelCsv --test=AnswerQuestionCombineCsv \
