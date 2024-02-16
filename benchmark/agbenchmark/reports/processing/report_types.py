@@ -2,12 +2,13 @@
 Model definitions used internally and for reports generated during command-line runs.
 """
 
+import logging
 from typing import Any, Dict, List
 
 from pydantic import BaseModel, Field, constr, validator
 
 datetime_format = r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+00:00$"
-
+logger = logging.getLogger(__name__)
 
 class TestResult(BaseModel):
     """Result details for a single run of a test/challenge."""
@@ -31,6 +32,8 @@ class TestResult(BaseModel):
             success = values["success"]
             assert not success, "fail_reason must only be specified if success=False"
         else:
+            if not values["success"]:
+                logger.debug(f"Invalid failure reason {repr(v)}; other values: {values}")
             assert values["success"], "fail_reason is required if success=False"
         return v
 
